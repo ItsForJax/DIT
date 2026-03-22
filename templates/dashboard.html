@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — DIT{% endblock %}
+{% block content %}
+
+<div class="dashboard-header">
+  <h1>Dashboard</h1>
+  <div class="welcome-box">Welcome back, {{ user_name }}</div>
+</div>
+
+<div class="page-body">
+
+  <!-- Stat Cards: three distinct accent colors -->
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="label">Total Debt Remaining</div>
+      <div class="value">&#8369; {{ "%.2f"|format(total_debt) }}</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="label">Monthly Payment Due</div>
+      <div class="value">&#8369; {{ "%.2f"|format(monthly_due) }}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="label">Income This Month</div>
+      <div class="value">&#8369; {{ "%.2f"|format(income_this_month) }}</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="margin-bottom:28px;">
+    <div class="section-label">Quick Actions</div>
+    <div class="qa-grid">
+      <a href="{{ url_for('debts') }}" class="qa-card">
+        <div>Add Debt</div>
+        <div class="qa-sub">Record a new loan</div>
+      </a>
+      <a href="{{ url_for('repayment') }}" class="qa-card">
+        <div>Repayment Schedule</div>
+        <div class="qa-sub">View monthly payments</div>
+      </a>
+      <a href="{{ url_for('income') }}" class="qa-card">
+        <div>Income Allocation</div>
+        <div class="qa-sub">50/30/20 breakdown</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- My Debts -->
+  {% if debts %}
+  <div>
+    <div class="section-label">My Debts</div>
+    <div class="card" style="padding:16px;">
+      {% for debt in debts %}
+      {% set paid_count = debt.payments | selectattr('paid') | list | length %}
+      {% set total = debt.payments | length %}
+      <div class="debt-item">
+        <div class="debt-item-info">
+          <div class="debt-name">{{ debt.name }}</div>
+          <div class="debt-meta">&#8369; {{ "%.2f"|format(debt.principal) }} &middot; {{ debt.months }} months &middot; {{ debt.rate }}% / month</div>
+          <div style="margin-top:8px;">
+            <div style="font-size:0.72rem; color:var(--text-muted);">{{ paid_count }}/{{ total }} payments completed</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:{{ (paid_count/total*100)|int }}%;"></div>
+            </div>
+          </div>
+        </div>
+        <a href="{{ url_for('repayment') }}?debt_id={{ debt.id }}">&rsaquo;</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <p>No debts recorded yet.<br>
+       <a href="{{ url_for('debts') }}" style="color:var(--primary); font-weight:600;">Add your first debt &rarr;</a>
+    </p>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

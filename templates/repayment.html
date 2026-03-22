@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Repayment Tracker — DIT{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{{ url_for('dashboard') }}" class="back-arrow">&larr;</a>
+  Repayment Tracker
+  {% if debts %}
+  <div style="margin-left:auto;">
+    <form method="GET" action="{{ url_for('repayment') }}" style="display:inline;">
+      <select name="debt_id" onchange="this.form.submit()"
+              style="padding:8px 13px; border-radius:var(--radius-sm);
+                     border:1px solid var(--border-dark);
+                     font-family:'Inter',sans-serif; font-weight:500; font-size:0.875rem;
+                     background:var(--surface); color:var(--text);
+                     cursor:pointer; outline:none;">
+        {% for d in debts %}
+        <option value="{{ d.id }}" {{ 'selected' if selected and selected.id == d.id else '' }}>
+          {{ d.name }} — &#8369; {{ "%.2f"|format(d.principal) }}
+        </option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<div class="page-body">
+  {% if not debts %}
+  <div class="empty-state" style="margin-top:40px;">
+    <p>No debts to track yet.<br>
+       <a href="{{ url_for('debts') }}" style="color:var(--primary); font-weight:600;">Add your first debt &rarr;</a>
+    </p>
+  </div>
+  {% elif selected %}
+  {% set paid_count = selected.payments | selectattr('paid') | list | length %}
+  {% set total = selected.payments | length %}
+
+  <div class="repay-layout">
+
+    <!-- Left: Debt Details -->
+    <div class="card" style="padding:20px;">
+      <div style="font-size:0.95rem; font-weight:700; margin-bottom:14px;">Debt Details</div>
+      <div class="detail-card">
+        <div class="detail-label">Creditor / Loan Name</div>
+        <div class="detail-value">{{ selected.name }}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Amount Borrowed</div>
+        <div class="detail-value">&#8369; {{ "%.2f"|format(selected.principal) }}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Interest Rate</div>
+        <div class="detail-value">{{ selected.rate }}% / month</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Duration</div>
+        <div class="detail-value">{{ selected.months }} months</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Monthly Payment</div>
+        <div class="detail-value">&#8369; {{ "%.2f"|format(selected.monthly_payment) }}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Progress</div>
+        <div style="font-size:0.82rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">{{ paid_count }}/{{ total }} paid</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:{{ (paid_count/total*100)|int if total > 0 else 0 }}%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Payment Schedule -->
+    <div class="card">
+      <div style="font-size:0.95rem; font-weight:700; margin-bottom:16px;">Monthly Payment Schedule</div>
+      <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+        <table class="repay-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Due Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in selected.payments %}
+            <tr class="{{ 'paid-row' if p.paid else '' }}">
+              <td><strong>Month {{ p.month }}</strong></td>
+              <td>{{ p.due_date }}</td>
+              <td>&#8369; {{ "%.2f"|format(p.amount) }}</td>
+              <td>
+                {% if p.paid %}
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <span class="badge-paid">Paid</span>
+                    <form method="POST" action="{{ url_for('mark_paid', payment_id=p.id) }}">
+                      <button type="submit" style="background:none; border:none; cursor:pointer; font-size:0.78rem; font-weight:500; color:var(--text-muted); padding:0; text-decoration:underline; font-family:'Inter',sans-serif;">undo</button>
+                    </form>
+                  </div>
+                {% else %}
+                  <form method="POST" action="{{ url_for('mark_paid', payment_id=p.id) }}">
+                    <button type="submit" class="pay-checkbox" style="background:none; border:none; font-family:'Inter',sans-serif;">
+                      <input type="checkbox" onclick="this.form.submit(); return false;">
+                      Mark as paid
+                    </button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

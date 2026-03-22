@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}DIT - Take Control of Your Finances{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1><span class="accent">Take control</span><br>of your finances</h1>
+    <p>Track your debts, manage your income, and build a clear path to financial stability — all in one place.</p>
+    <a href="{{ url_for('register') }}" class="btn-primary" style="font-size:0.95rem; padding:11px 26px;">Get Started — It's Free</a>
+  </div>
+
+  <div class="hero-grid">
+    <a href="{{ url_for('debts') if session.user_id else url_for('register') }}" class="hero-tile">
+      <div class="tile-label">Feature</div>
+      Record Your Debts
+    </a>
+    <a href="{{ url_for('repayment') if session.user_id else url_for('register') }}" class="hero-tile">
+      <div class="tile-label">Feature</div>
+      Track Payments
+    </a>
+    <a href="{{ url_for('income') if session.user_id else url_for('register') }}" class="hero-tile">
+      <div class="tile-label">Feature</div>
+      Manage Income
+    </a>
+    <a href="{{ url_for('register') if not session.user_id else url_for('dashboard') }}" class="hero-tile cta">
+      <div class="tile-label">Get Started</div>
+      Start Tracking Now &rsaquo;
+    </a>
+  </div>
+</section>
+{% endblock %}

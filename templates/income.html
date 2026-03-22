@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Income & Allocation — DIT{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{{ url_for('dashboard') }}" class="back-arrow">&larr;</a>
+  Income and Allocation
+</div>
+
+<div class="page-body">
+  <div class="sidebar-layout">
+
+    <!-- Left: Input -->
+    <div class="card">
+      <div style="font-size:1rem; font-weight:700; margin-bottom:18px;">Enter Your Income</div>
+      <form method="POST" action="{{ url_for('income') }}">
+        <div class="input-group">
+          <label>Total Monthly Income</label>
+          <div class="prefix">
+            <span>&#8369;</span>
+            <input type="number" name="income" placeholder="0.00"
+                   value="{{ income if income else '' }}"
+                   min="1" step="0.01" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; padding:11px; font-size:0.9rem; margin-top:4px;">
+          Calculate Allocation
+        </button>
+      </form>
+    </div>
+
+    <!-- Right: Allocation -->
+    <div class="card">
+      <div style="font-size:1rem; font-weight:700; margin-bottom:18px;">Suggested Allocation</div>
+
+      <div class="alloc-grid" style="margin-bottom:20px;">
+        <div class="alloc-card">
+          <div class="alloc-pct">50%</div>
+          <div class="alloc-label">Needs</div>
+          {% if allocation %}
+          <div class="alloc-value">&#8369; {{ "%.2f"|format(allocation.needs) }}</div>
+          {% else %}
+          <div class="alloc-value" style="color:var(--text-light);">&mdash;</div>
+          {% endif %}
+        </div>
+        <div class="alloc-card">
+          <div class="alloc-pct" style="color:var(--amber);">30%</div>
+          <div class="alloc-label">Wants</div>
+          {% if allocation %}
+          <div class="alloc-value">&#8369; {{ "%.2f"|format(allocation.wants) }}</div>
+          {% else %}
+          <div class="alloc-value" style="color:var(--text-light);">&mdash;</div>
+          {% endif %}
+        </div>
+        <div class="alloc-card">
+          <div class="alloc-pct" style="color:var(--green);">20%</div>
+          <div class="alloc-label">Savings</div>
+          {% if allocation %}
+          <div class="alloc-value">&#8369; {{ "%.2f"|format(allocation.savings) }}</div>
+          {% else %}
+          <div class="alloc-value" style="color:var(--text-light);">&mdash;</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="info-box">
+        The <strong>50/30/20 rule</strong> allocates 50% of your income to needs, 30% to wants, and 20% to savings &mdash; a simple framework for balanced financial planning.
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Log In — DIT{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2>Sign in to your account</h2>
+    <p class="auth-subtitle">Enter your credentials to continue</p>
+    <form method="POST" action="{{ url_for('login') }}">
+      <div class="input-group">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Your password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-primary">Log In</button>
+    </form>
+    <div class="auth-footer">
+      Don't have an account? <a href="{{ url_for('register') }}">Get started</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

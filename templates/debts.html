@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}My Debts — DIT{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{{ url_for('dashboard') }}" class="back-arrow">&larr;</a>
+  My Debts
+  <span style="font-size:0.82rem; font-weight:500; color:var(--text-muted);">{{ count }}/5 recorded</span>
+</div>
+
+<div class="page-body">
+  <div class="two-col">
+
+    <!-- Left: Form -->
+    <div class="card">
+      <div style="font-size:1rem; font-weight:700; margin-bottom:20px;">Add a New Debt</div>
+      {% if count >= 5 %}
+      <div class="warning-box">
+        You have reached the 5-debt limit. Remove an existing debt to add a new one.
+      </div>
+      {% else %}
+      <form method="POST" action="{{ url_for('debts') }}">
+        <div class="input-group">
+          <label>Creditor / Loan Name</label>
+          <input type="text" name="name" placeholder="e.g. BDO Personal Loan" required>
+        </div>
+        <div class="input-group">
+          <label>Amount Borrowed</label>
+          <div class="prefix">
+            <span>&#8369;</span>
+            <input type="number" name="principal" placeholder="0.00" min="1" step="0.01" required>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Monthly Interest Rate (%)</label>
+          <input type="number" name="rate" placeholder="e.g. 3.5" min="0" step="0.01" required>
+        </div>
+        <div class="input-group">
+          <label>Repayment Period</label>
+          <select name="months" required>
+            <option value="" disabled selected>Select number of months</option>
+            {% for m in range(1, 61) %}
+            <option value="{{ m }}">{{ m }} month{{ 's' if m > 1 else '' }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; padding:11px; font-size:0.9rem; margin-top:4px;">
+          Add Debt
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
+    <!-- Right: Debts List -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <div style="font-size:1rem; font-weight:700;">Recorded Debts</div>
+        {% if debts %}
+        <a href="{{ url_for('repayment') }}" style="font-weight:600; font-size:0.82rem; color:var(--primary); text-decoration:none;">View Schedule &rarr;</a>
+        {% endif %}
+      </div>
+
+      {% if debts %}
+        {% for debt in debts %}
+        {% set remaining = debt.payments | rejectattr('paid') | list | length %}
+        <div class="debt-item">
+          <div class="debt-item-info">
+            <div class="debt-name">{{ debt.name }}</div>
+            <div class="debt-meta">&#8369; {{ "%.2f"|format(debt.principal) }} &middot; {{ debt.months }} months</div>
+            <div class="debt-meta">{{ remaining }} payment{{ 's' if remaining != 1 else '' }} remaining</div>
+          </div>
+          <div class="debt-item-actions">
+            <a href="{{ url_for('repayment') }}?debt_id={{ debt.id }}">&rsaquo;</a>
+            <form method="POST" action="{{ url_for('delete_debt', debt_id=debt.id) }}" onsubmit="return confirm('Remove this debt?')">
+              <button type="submit" class="btn-danger">Remove</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <p>No debts added yet.</p>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

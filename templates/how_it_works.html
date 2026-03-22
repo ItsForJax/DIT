@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}How It Works — DIT{% endblock %}
+{% block content %}
+<div class="content-page">
+  <h1>How DIT Works</h1>
+  <p>The DIT system is designed to be simple and easy to use, even for beginners. Follow these steps to start managing your finances:</p>
+
+  <div style="margin-top:28px;">
+    <div class="step-box">
+      <h3>Step 1 &mdash; Add Your Debts</h3>
+      <p>Enter your debt details such as the amount borrowed, interest rate, and repayment period in months. You can add up to 5 debts to keep track of multiple loans.</p>
+    </div>
+    <div class="step-box">
+      <h3>Step 2 &mdash; View Your Repayment Schedule</h3>
+      <p>After entering your debt, the system will automatically calculate your monthly payments and generate a repayment checklist. Each month you can mark payments as completed and track your progress.</p>
+    </div>
+    <div class="step-box">
+      <h3>Step 3 &mdash; Input Your Income</h3>
+      <p>Enter your total income (weekly or monthly). This allows the system to help you plan your finances more effectively.</p>
+    </div>
+    <div class="step-box">
+      <h3>Step 4 &mdash; Get Suggested Income Allocation</h3>
+      <p>The system will automatically divide your income using the <strong>50/30/20 rule</strong> — 50% to Needs, 30% to Wants, and 20% to Savings. This helps you balance spending and saving habits.</p>
+    </div>
+    <div class="step-box">
+      <h3>Step 5 &mdash; Monitor Your Financial Summary</h3>
+      <p>The dashboard shows your total debt, remaining balance, payment progress, and income allocation. This gives you a clear picture of your financial situation at all times.</p>
+    </div>
+    <div class="step-box">
+      <h3>Step 6 &mdash; Stay Consistent</h3>
+      <p>By regularly updating your records you can avoid missed payments, reduce debt faster, improve financial discipline, and achieve better financial stability.</p>
+    </div>
+  </div>
+
+  <h2>Amortization Formula</h2>
+  <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:20px; font-family:monospace; font-size:0.9rem; line-height:2; margin-top:10px;">
+    M = P &times; [r(1+r)<sup>n</sup> / ((1+r)<sup>n</sup> &minus; 1)]<br>
+    <span style="color:var(--text-muted); font-size:0.82rem;">
+      P = Principal (amount borrowed)<br>
+      r = Interest rate (monthly, as decimal)<br>
+      n = Number of repayments (months)
+    </span>
+  </div>
+
+  <div style="margin-top:40px; text-align:center;">
+    <a href="{{ url_for('register') }}" class="btn-primary" style="font-size:0.95rem; padding:11px 28px;">Start Tracking Now &rarr;</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Create Account — DIT{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2>Create your account</h2>
+    <p class="auth-subtitle">Start managing your finances today</p>
+    <form method="POST" action="{{ url_for('register') }}">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Your full name" required>
+      </div>
+      <div class="input-group">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Min. 6 characters" required>
+      </div>
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm" placeholder="Repeat your password" required>
+      </div>
+      <button type="submit" class="btn-primary">Create Account</button>
+    </form>
+    <div class="auth-footer">
+      Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

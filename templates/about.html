@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}About — DIT{% endblock %}
+{% block content %}
+<div class="content-page">
+  <h1>About DIT</h1>
+  <p>
+    The <strong>Debt and Income Tracker (DIT)</strong> is a web-based financial management platform designed to help meat vendors effectively manage their debts and improve their financial well-being.
+  </p>
+  <p style="margin-top:12px;">
+    This platform was developed based on a study that identified debt management practices as a key factor in strengthening financial stability among meat vendors. Many vendors face challenges such as multiple loans, inconsistent income, and lack of financial tracking tools. DIT aims to address these challenges by providing a simple, accessible, and user-friendly system.
+  </p>
+
+  <h2>Purpose of the Website</h2>
+  <p>The website aims to:</p>
+  <ul>
+    <li>Help vendors monitor and track their debts</li>
+    <li>Provide a clear repayment checklist</li>
+    <li>Guide users in allocating their income properly</li>
+    <li>Promote financial discipline and responsible borrowing</li>
+    <li>Serve as a digital alternative to manual record-keeping</li>
+  </ul>
+
+  <h2>Who Can Use This Website?</h2>
+  <p>This platform is designed for:</p>
+  <ul>
+    <li>Meat vendors in public markets</li>
+    <li>Small business owners</li>
+    <li>Individuals managing multiple debts</li>
+    <li>Users with little to no experience in financial tools</li>
+  </ul>
+
+  <h2>Vision</h2>
+  <p>To empower small vendors by providing accessible tools that promote financial awareness, stability, and growth.</p>
+
+  <h2>Mission</h2>
+  <p>To develop a user-friendly platform that helps vendors manage debts effectively, allocate income wisely, and improve their overall financial well-being.</p>
+
+  <div style="margin-top:40px; text-align:center;">
+    <a href="{{ url_for('register') }}" class="btn-primary" style="font-size:0.95rem; padding:11px 28px;">Get Started — It's Free</a>
+  </div>
+</div>
+{% endblock %}
