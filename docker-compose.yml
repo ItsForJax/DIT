@@ -10,20 +10,18 @@ services:
       MYSQL_PASSWORD: dit_password
     volumes:
       - mysql_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=rootpassword"]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 20s
+    networks:
+      - dit_network
 
   web:
     build: .
     restart: unless-stopped
-    ports:
-      - "5000:5000"
     environment:
       SECRET_KEY: change-this-secret-key-in-production
       DB_HOST: db
@@ -34,6 +32,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - dit_network
 
 volumes:
   mysql_data:
+
+networks:
+  dit_network:
+    driver: bridge
