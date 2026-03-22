@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}DIT - Debt and Income Tracker{% endblock %}</title>
   <!-- Prevent flash of wrong theme -->
-  <script>try{const t=localStorage.getItem('dit-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+  <script>try{const t=localStorage.getItem('dit-theme');if(t!=='light')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -506,7 +506,7 @@
     .hero-tile:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
     .hero-tile .tile-label { font-size: 0.68rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
     .hero-tile.cta { background: var(--navy); color: #fff; border-color: var(--navy); }
-    .hero-tile.cta .tile-label { color: rgba(255,255,255,0.5); }
+    .hero-tile.cta .tile-label { color: rgba(255,255,255,0.85); }
     .hero-tile.cta:hover { opacity: 0.92; }
     [data-theme="dark"] .hero-tile.cta { background: var(--primary); border-color: var(--primary); }
 
